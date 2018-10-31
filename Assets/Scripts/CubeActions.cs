@@ -1,4 +1,4 @@
-using System;
+  using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public class CubeActions : MonoBehaviour
     private AudioSource _audioSource;
     private GameObject _go;
     private float _activeRotation = 45f;
-    private float _originalRotation = 0f;
+    private float _defaultRotation = 0f;
     private bool _isActive;
     private Renderer _rend;
     private Color _defaultColor;
@@ -30,7 +30,7 @@ public class CubeActions : MonoBehaviour
     {
         _IsOver = true;
 
-        // Change color to overColor
+        // Change logo color (front poly of cube)
         _rend.material.color = Color.cyan;
     }
 
@@ -43,25 +43,51 @@ public class CubeActions : MonoBehaviour
     }
 
 
-    public void Click()
+    public void Update()
     {
-        if (_IsOver)
+        if (Input.GetButton("Fire1"))
         {
-            // play audio clip
-            _audioSource.Play();
+            if (_IsOver)
+            {
+                if (!_isActive)
+                {
+                    // Activate button
+                    _isActive = true;
 
-            // Turn cube 45 degrees
-            //StartCoroutine(RotateCube(_activeRotation));
-            _go.transform.Rotate(0f, 0f, 45f);
+                    // Play sound
+                    _audioSource.Play();
 
-            // begin pulse animation coroutine
-            // TODO
+                    // Rotate 45 degrees
+                    _go.transform.Rotate(0f, 0f, _activeRotation);
+                    // StartCoroutine(RotateCube(_activeRotation));
 
-            _isActive = true;
-        }        
+                    // Change color
+                    _rend.material.color = Color.yellow;
+                }
+                else
+                {
+                    // Deactivate button
+                    _isActive = false;
+
+                    // Stop sound clip
+                    _audioSource.Stop();
+
+                    // Rotate back to default rotation
+                    _go.transform.Rotate(0f, 0f, -_activeRotation);
+                    // StartCoroutine(RotateCube(-_activeRotation);
+
+                    // Change color back to default
+                    _rend.material.color = _defaultColor;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }   
     }
 
-    // WORK ON HERE FIRST
+    // TODO onOver and Fire1, turn button w/ lerp (1 second)
     //private IEnumerator RotateCube(float targetRotation)
     //{
     //    Quaternion rotation = Quaternion.Euler(0f, 0f, targetRotation);
