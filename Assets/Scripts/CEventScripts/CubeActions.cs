@@ -2,11 +2,15 @@
 
 public class CubeActions : MonoBehaviour
 {
+    public float rotationSpeed;
+    public float rotationDegrees;
+
     private RayCaster _rayCaster;
     private GameObject _this;
     private Renderer _rend;
     private Color _defaultColor;
     private bool _isOver;
+    private AudioSource _audio;
 
     private void Awake()
     {
@@ -14,61 +18,22 @@ public class CubeActions : MonoBehaviour
         _this = this.gameObject;
         _rend = _this.GetComponent<Renderer>();
         _defaultColor = _rend.material.color;
+        _audio = _this.GetComponent<AudioSource>();
     }
 
     public void Over()
     {
         _rend.material.color = Color.cyan;
-        _this.transform.Rotate(0f, 0f, 45f);
+        _this.transform.Rotate(0f, 0f, rotationDegrees);
         _isOver = true;
     }
 
     public void Out()
     {
-        // change color
         _rend.material.color = _defaultColor;
-        _this.transform.Rotate(0f, 0f, -45f);
+        _this.transform.Rotate(0f, 0f, -rotationDegrees);
         _isOver = false;
     }
-
-
-    //public float rotationSpeed;
-    //public bool isActive;
-
-    //private bool _IsOver;
-    //private AudioSource _audioSource;
-    //private GameObject _go;
-    //private float _activeRotation = 45f;
-    //private float _defaultRotation = 0f;
-    //private Renderer _rend;
-    //private Color _defaultColor;
-
-
-    //private void Awake()
-    //{
-    //    _go = this.gameObject;
-    //    _audioSource = _go.GetComponent<AudioSource>();
-    //    isActive = false;
-    //    _rend = _go.GetComponent<Renderer>();
-    //    _defaultColor = _rend.material.color;
-    //}
-
-
-    //public void Over()
-    //{
-    //    _IsOver = true;
-
-    //    // Change logo color (front poly of cube)
-    //    _rend.material.color = Color.cyan;
-    //}
-
-
-    //public void Out()
-    //{
-    //    _IsOver = false;
-
-    //    _rend.material.color = _defaultColor;
-    //}
 
 
     //public void Update()
