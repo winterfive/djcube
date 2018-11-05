@@ -1,8 +1,4 @@
-
-# Created by https://www.gitignore.io/api/unity,windows
-# Edit at https://www.gitignore.io/?templates=unity,windows
-
-### Unity ###
+# Unity
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -41,7 +37,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-### Windows ###
+# Windows
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
