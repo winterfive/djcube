@@ -6,6 +6,7 @@ public class CubeActions : MonoBehaviour
     private GameObject _this;
     private Renderer _rend;
     private Color _defaultColor;
+    private bool _isOver;
 
     private void Awake()
     {
@@ -17,22 +18,18 @@ public class CubeActions : MonoBehaviour
 
     public void Over()
     {
-        // change color
         _rend.material.color = Color.cyan;
-
-        // rotate 45 degrees
         _this.transform.Rotate(0f, 0f, 45f);
+        _isOver = true;
     }
 
-    //private void OnEnable()
-    //{
-    //    RayCaster.OnNewObjectFound += Over;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    RayCaster.OnNewObjectFound -= Over;
-    //}
+    public void Out()
+    {
+        // change color
+        _rend.material.color = _defaultColor;
+        _this.transform.Rotate(0f, 0f, -45f);
+        _isOver = false;
+    }
 
 
     //public float rotationSpeed;
