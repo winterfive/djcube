@@ -59,14 +59,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CEventScripts\CubeActions.cs" />
+    <Compile Include="Assets\Scripts\CEventScripts\RayCaster.cs" />
+    <Compile Include="Assets\Scripts\CEventScripts\SetAsSingleton.cs" />
     <Compile Include="Assets\Scripts\Common\SessionData.cs" />
-    <Compile Include="Assets\Scripts\CubeActions.cs" />
-    <Compile Include="Assets\Scripts\CubeSpawner.cs" />
-    <Compile Include="Assets\Scripts\PlayClip.cs" />
+    <Compile Include="Assets\Scripts\MyOldScripts\CubeSpawner.cs" />
     <Compile Include="Assets\Scripts\Scripts\VRDeviceManager.cs" />
     <Compile Include="Assets\Scripts\Scripts\VREyeRaycaster.cs" />
     <Compile Include="Assets\Scripts\Scripts\VRFPSCounter.cs" />
     <Compile Include="Assets\Scripts\Scripts\VRInput.cs" />
+    <Compile Include="Assets\Scripts\Scripts\VRInteractiveItem.cs" />
     <Compile Include="Assets\Scripts\Scripts\VRTrackingReset.cs" />
     <Compile Include="Assets\Scripts\Utils\Reticle.cs" />
     <Compile Include="Assets\Scripts\Utils\ReturnToMainMenu.cs" />

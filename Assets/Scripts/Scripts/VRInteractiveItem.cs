@@ -39,7 +39,7 @@ namespace VRStandardAssets.Utils
         public void Out()
         {
             m_IsOver = false;
-            this.gameObject.GetComponent<Renderer>().material.color = Color.green;
+           this.gameObject.GetComponent<Renderer>().material.color = Color.green;
 
             if (OnOut != null)
                 OnOut();
