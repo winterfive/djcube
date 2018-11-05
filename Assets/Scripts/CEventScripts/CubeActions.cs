@@ -2,10 +2,18 @@
 
 public class CubeActions : MonoBehaviour
 {
+    // Handles all individual sound cube actions (rotate, color chnges, playing audio, etc)
+
+    public float rotationSpeed;
+    public float rotationDegrees;
+
     private RayCaster _rayCaster;
     private GameObject _this;
     private Renderer _rend;
     private Color _defaultColor;
+    private bool _isOver;
+    private AudioSource _audio;
+    private bool _isActive;
 
     private void Awake()
     {
@@ -13,110 +21,65 @@ public class CubeActions : MonoBehaviour
         _this = this.gameObject;
         _rend = _this.GetComponent<Renderer>();
         _defaultColor = _rend.material.color;
+        _audio = _this.GetComponent<AudioSource>();
+        _isActive = false;
     }
 
     public void Over()
     {
-        // change color
         _rend.material.color = Color.cyan;
-
-        // rotate 45 degrees
-        _this.transform.Rotate(0f, 0f, 45f);
+        
+        _isOver = true;
     }
 
-    //private void OnEnable()
-    //{
-    //    RayCaster.OnNewObjectFound += Over;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    RayCaster.OnNewObjectFound -= Over;
-    //}
+    public void Out()
+    {
+        _rend.material.color = _defaultColor;
+        
+        _isOver = false;
+    }
 
 
-    //public float rotationSpeed;
-    //public bool isActive;
+    public void Activate()
+    {
+        if (_isOver)
+        {
+            if (!_isActive)
+            {
+                // activate button
+                _isActive = true;
 
-    //private bool _IsOver;
-    //private AudioSource _audioSource;
-    //private GameObject _go;
-    //private float _activeRotation = 45f;
-    //private float _defaultRotation = 0f;
-    //private Renderer _rend;
-    //private Color _defaultColor;
+                // play sound
+                _audio.Play();
 
+                // rotate 45 degrees
+                _this.transform.Rotate(0f, 0f, rotationDegrees);
+                // startcoroutine(rotatecube(rotationDegrees));
 
-    //private void Awake()
-    //{
-    //    _go = this.gameObject;
-    //    _audioSource = _go.GetComponent<AudioSource>();
-    //    isActive = false;
-    //    _rend = _go.GetComponent<Renderer>();
-    //    _defaultColor = _rend.material.color;
-    //}
+                // change color
+                _rend.material.color = Color.yellow;
+            }
+            else
+            {
+                // deactivate button
+                _isActive = false;
 
+                // stop sound clip
+                _audio.Stop();
 
-    //public void Over()
-    //{
-    //    _IsOver = true;
+                // rotate back to default rotation
+                _this.transform.Rotate(0f, 0f, -rotationDegrees);
+                // startcoroutine(rotatecube(-rotationDegrees);
 
-    //    // Change logo color (front poly of cube)
-    //    _rend.material.color = Color.cyan;
-    //}
-
-
-    //public void Out()
-    //{
-    //    _IsOver = false;
-
-    //    _rend.material.color = _defaultColor;
-    //}
-
-
-    //public void Update()
-    //{
-    //    if (Input.GetButton("Fire1"))
-    //    {
-    //        if (_IsOver)
-    //        {
-    //            if (!isActive)
-    //            {
-    //                // Activate button
-    //                isActive = true;
-
-    //                // Play sound
-    //                _audioSource.Play();
-
-    //                // Rotate 45 degrees
-    //                _go.transform.Rotate(0f, 0f, _activeRotation);
-    //                // StartCoroutine(RotateCube(_activeRotation));
-
-    //                // Change color
-    //                _rend.material.color = Color.yellow;
-    //            }
-    //            else
-    //            {
-    //                // Deactivate button
-    //                isActive = false;
-
-    //                // Stop sound clip
-    //                _audioSource.Stop();
-
-    //                // Rotate back to default rotation
-    //                _go.transform.Rotate(0f, 0f, -_activeRotation);
-    //                // StartCoroutine(RotateCube(-_activeRotation);
-
-    //                // Change color back to default
-    //                _rend.material.color = _defaultColor;
-    //            }
-    //        }
-    //        else
-    //        {
-    //            return;
-    //        }
-    //    }
-    //}
+                // change color back to default
+                _rend.material.color = _defaultColor;
+            }
+        }
+        else
+        {
+            return;
+        }
+    }
 
     // TODO onOver and Fire1, turn button w/ lerp (1 second)
     //private IEnumerator RotateCube(float targetRotation)
@@ -129,4 +92,15 @@ public class CubeActions : MonoBehaviour
     //    }
     //    yield return null;
     //}}
+
+    private void OnEnable()
+    {
+        InputManager.OnClick += Activate;
+    }
+
+
+    private void OnDisable()
+    {
+        InputManager.OnClick -= Activate;
+    }
 }
