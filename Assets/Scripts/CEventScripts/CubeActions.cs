@@ -2,6 +2,8 @@
 
 public class CubeActions : MonoBehaviour
 {
+    // Handles all individual sound cube actions (rotate, color chnges, playing audio, etc)
+
     public float rotationSpeed;
     public float rotationDegrees;
 
@@ -11,6 +13,7 @@ public class CubeActions : MonoBehaviour
     private Color _defaultColor;
     private bool _isOver;
     private AudioSource _audio;
+    private bool _isActive;
 
     private void Awake()
     {
@@ -19,66 +22,64 @@ public class CubeActions : MonoBehaviour
         _rend = _this.GetComponent<Renderer>();
         _defaultColor = _rend.material.color;
         _audio = _this.GetComponent<AudioSource>();
+        _isActive = false;
     }
 
     public void Over()
     {
         _rend.material.color = Color.cyan;
-        _this.transform.Rotate(0f, 0f, rotationDegrees);
+        
         _isOver = true;
     }
 
     public void Out()
     {
         _rend.material.color = _defaultColor;
-        _this.transform.Rotate(0f, 0f, -rotationDegrees);
+        
         _isOver = false;
     }
 
 
-    //public void Update()
-    //{
-    //    if (Input.GetButton("Fire1"))
-    //    {
-    //        if (_IsOver)
-    //        {
-    //            if (!isActive)
-    //            {
-    //                // Activate button
-    //                isActive = true;
+    public void Activate()
+    {
+        if (_isOver)
+        {
+            if (!_isActive)
+            {
+                // activate button
+                _isActive = true;
 
-    //                // Play sound
-    //                _audioSource.Play();
+                // play sound
+                _audio.Play();
 
-    //                // Rotate 45 degrees
-    //                _go.transform.Rotate(0f, 0f, _activeRotation);
-    //                // StartCoroutine(RotateCube(_activeRotation));
+                // rotate 45 degrees
+                _this.transform.Rotate(0f, 0f, rotationDegrees);
+                // startcoroutine(rotatecube(rotationDegrees));
 
-    //                // Change color
-    //                _rend.material.color = Color.yellow;
-    //            }
-    //            else
-    //            {
-    //                // Deactivate button
-    //                isActive = false;
+                // change color
+                _rend.material.color = Color.yellow;
+            }
+            else
+            {
+                // deactivate button
+                _isActive = false;
 
-    //                // Stop sound clip
-    //                _audioSource.Stop();
+                // stop sound clip
+                _audio.Stop();
 
-    //                // Rotate back to default rotation
-    //                _go.transform.Rotate(0f, 0f, -_activeRotation);
-    //                // StartCoroutine(RotateCube(-_activeRotation);
+                // rotate back to default rotation
+                _this.transform.Rotate(0f, 0f, -rotationDegrees);
+                // startcoroutine(rotatecube(-rotationDegrees);
 
-    //                // Change color back to default
-    //                _rend.material.color = _defaultColor;
-    //            }
-    //        }
-    //        else
-    //        {
-    //            return;
-    //        }
-    //    }
-    //}
+                // change color back to default
+                _rend.material.color = _defaultColor;
+            }
+        }
+        else
+        {
+            return;
+        }
+    }
 
     // TODO onOver and Fire1, turn button w/ lerp (1 second)
     //private IEnumerator RotateCube(float targetRotation)
@@ -91,4 +92,15 @@ public class CubeActions : MonoBehaviour
     //    }
     //    yield return null;
     //}}
+
+    private void OnEnable()
+    {
+        InputManager.OnClick += Activate;
+    }
+
+
+    private void OnDisable()
+    {
+        InputManager.OnClick -= Activate;
+    }
 }
