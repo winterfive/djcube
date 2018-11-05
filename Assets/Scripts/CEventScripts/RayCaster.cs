@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 
-public class RayCaster : SetAsSingleton<RayCaster> {
+public class RayCaster : SetAsSingleton<RayCaster>
+{
     // Manages raycasting from the player's POV
 
-    public float range = 100f;
+    public float range;
     public int layerMask;
     
     private GameObject _currentFoundObject;
@@ -22,28 +23,29 @@ public class RayCaster : SetAsSingleton<RayCaster> {
     {
         if (Physics.Raycast(transform.position, transform.forward, out _hit, range, _layerMask))
         {
-            CheckForNewObject(_hit);
+            CheckForNewObject();
+        }
+        else
+        {
+            if (_currentFoundObject)
+            {
+                _cubeActions.Out();
+                _currentFoundObject = null;
+            }
         }
     }
 
     //  Compares newly found object with previous object
-    //  Calls event
     //  RaycastHit -> void
-    public void CheckForNewObject(RaycastHit hit)
+    public void CheckForNewObject()
     {
-        GameObject newObject = hit.collider.gameObject;
+        GameObject newObject = _hit.collider.gameObject;
 
         if (!newObject.Equals(_currentFoundObject))
         {
-            if (_currentFoundObject != null)
-            {
-                _cubeActions.Out();
-            }
-
             _currentFoundObject = newObject;
-
             _cubeActions = _currentFoundObject.GetComponent<CubeActions>();
-            _cubeActions.Over();
+            _cubeActions.Over();            
         }
     }
 }
