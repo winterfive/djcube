@@ -4,21 +4,23 @@ public class RayCaster : SetAsSingleton<RayCaster> {
     // Manages raycasting from the player's POV
 
     public float range = 100f;
-
-    public delegate void NewObjectFound();
-    public static event NewObjectFound OnNewObjectFound;
+    public int layerMask;
     
     private GameObject _currentFoundObject;
-    private GameObject _previousFoundObject;
     private RaycastHit _hit;
     private CubeActions _cubeActions;
+    private int _layerMask;
 
-    public GameObject GetCurrentFoundObject() { return _currentFoundObject; }
 
+    private void Start()
+    {
+        _currentFoundObject = null;
+        _layerMask = 1 << 8;
+    }
 
     void Update()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out _hit, range))
+        if (Physics.Raycast(transform.position, transform.forward, out _hit, range, _layerMask))
         {
             CheckForNewObject(_hit);
         }
@@ -33,16 +35,15 @@ public class RayCaster : SetAsSingleton<RayCaster> {
 
         if (!newObject.Equals(_currentFoundObject))
         {
-            _previousFoundObject = _currentFoundObject;
+            if (_currentFoundObject != null)
+            {
+                _cubeActions.Out();
+            }
+
             _currentFoundObject = newObject;
 
             _cubeActions = _currentFoundObject.GetComponent<CubeActions>();
             _cubeActions.Over();
-
-            //if (OnNewObjectFound != null)
-            //{
-            //    OnNewObjectFound();
-            //}
         }
     }
 }
