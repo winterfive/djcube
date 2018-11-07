@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class CubeActions : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class CubeActions : MonoBehaviour
     {
         if (_isOver)
         {
+            // if button isn't already activated
             if (!_isActive)
             {
                 // activate button
@@ -53,12 +55,13 @@ public class CubeActions : MonoBehaviour
                 _audio.Play();
 
                 // rotate 45 degrees
-                _this.transform.Rotate(0f, 0f, rotationDegrees);
-                // startcoroutine(rotatecube(rotationDegrees));
+                //_this.transform.Rotate(0f, 0f, rotationDegrees);
+                StartCoroutine(RotateCube(rotationDegrees));
 
                 // change color
                 _rend.material.color = Color.yellow;
             }
+            // button is already activated
             else
             {
                 // deactivate button
@@ -68,8 +71,8 @@ public class CubeActions : MonoBehaviour
                 _audio.Stop();
 
                 // rotate back to default rotation
-                _this.transform.Rotate(0f, 0f, -rotationDegrees);
-                // startcoroutine(rotatecube(-rotationDegrees);
+                //_this.transform.Rotate(0f, 0f, -rotationDegrees);
+                StartCoroutine(RotateCube(-rotationDegrees));
 
                 // change color back to default
                 _rend.material.color = _defaultColor;
@@ -81,19 +84,20 @@ public class CubeActions : MonoBehaviour
         }
     }
 
-    // TODO onOver and Fire1, turn button w/ lerp (1 second)
-    //private IEnumerator RotateCube(float targetRotation)
-    //{
-    //    Quaternion rotation = Quaternion.Euler(0f, 0f, targetRotation);
 
-    //    while (_go.transform.rotation != rotation)
-    //    {
-    //        _go.transform.rotation = Quaternion.Lerp(_go.transform.rotation.z, rotation, rotationSpeed);
-    //    }
-    //    yield return null;
-    //}}
+    private IEnumerator RotateCube(float targetRotation)
+    {
+        Quaternion rotation = Quaternion.Euler(0f, 0f, targetRotation);
 
-    private void OnEnable()
+        while (_this.transform.rotation != rotation)
+        {
+            _this.transform.rotation = Quaternion.Lerp(_this.transform.rotation, rotation, rotationSpeed);
+        }
+        yield return null;
+    }
+
+
+private void OnEnable()
     {
         InputManager.OnClick += Activate;
     }
