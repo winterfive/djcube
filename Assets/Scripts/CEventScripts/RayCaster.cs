@@ -27,6 +27,7 @@ public class RayCaster : SetAsSingleton<RayCaster>
         }
         else
         {
+            // TODO Need to handle clicks when not over cube
             if (_currentFoundObject)
             {
                 _cubeActions.Out();
