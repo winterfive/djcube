@@ -57,11 +57,11 @@ public class CubeActions : MonoBehaviour
 
                 // rotate 45 degrees
                 StopCoroutine(RotateCube());
-                rotationDegrees = 45f;
+                rotationDegrees = -45f;
                 StartCoroutine(RotateCube());
 
-                // change color
-                _rend.material.color = Color.yellow;
+                // change logo or pusle color
+                // TODO
             }
             // button is already activated
             else
@@ -75,10 +75,7 @@ public class CubeActions : MonoBehaviour
                 // rotate back to default rotation
                 StopCoroutine(RotateCube());
                 rotationDegrees = 0f;
-                StartCoroutine(RotateCube());                
-
-                // change color back to default
-                _rend.material.color = _defaultColor;
+                StartCoroutine(RotateCube());
             }
         }
         else
