@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class CubeActions : MonoBehaviour
 {
-    // Handles all individual sound cube actions (rotate, color chnges, playing audio, etc)
+    // Handles all individual sound cube actions (rotate, color changes, playing audio, etc)
 
-    public float rotationSpeed;
-    public float rotationDegrees;
+    public float rotationDuration;
 
     private RayCaster _rayCaster;
     private GameObject _this;
@@ -15,6 +14,7 @@ public class CubeActions : MonoBehaviour
     private bool _isOver;
     private AudioSource _audio;
     private bool _isActive;
+    private float rotationDegrees;
 
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class CubeActions : MonoBehaviour
         _rend = _this.GetComponent<Renderer>();
         _defaultColor = _rend.material.color;
         _audio = _this.GetComponent<AudioSource>();
+        _isOver = false;
         _isActive = false;
     }
 
@@ -55,8 +56,9 @@ public class CubeActions : MonoBehaviour
                 _audio.Play();
 
                 // rotate 45 degrees
-                //_this.transform.Rotate(0f, 0f, rotationDegrees);
-                StartCoroutine(RotateCube(rotationDegrees));
+                StopCoroutine(RotateCube());
+                rotationDegrees = 45f;
+                StartCoroutine(RotateCube());
 
                 // change color
                 _rend.material.color = Color.yellow;
@@ -71,8 +73,9 @@ public class CubeActions : MonoBehaviour
                 _audio.Stop();
 
                 // rotate back to default rotation
-                //_this.transform.Rotate(0f, 0f, -rotationDegrees);
-                StartCoroutine(RotateCube(-rotationDegrees));
+                StopCoroutine(RotateCube());
+                rotationDegrees = 0f;
+                StartCoroutine(RotateCube());                
 
                 // change color back to default
                 _rend.material.color = _defaultColor;
@@ -85,15 +88,20 @@ public class CubeActions : MonoBehaviour
     }
 
 
-    private IEnumerator RotateCube(float targetRotation)
+    private IEnumerator RotateCube()
     {
-        Quaternion rotation = Quaternion.Euler(0f, 0f, targetRotation);
+        float time = 0f;
+        Quaternion start = _this.transform.rotation;
+        Quaternion target = Quaternion.Euler(0f, 0f, rotationDegrees);
 
-        while (_this.transform.rotation != rotation)
+        while (time < rotationDuration)
         {
-            _this.transform.rotation = Quaternion.Lerp(_this.transform.rotation, rotation, rotationSpeed);
+            _this.transform.rotation = Quaternion.Slerp(start, target, time / rotationDuration);
+            yield return null;
+            time += Time.deltaTime;
         }
-        yield return null;
+
+        _this.transform.rotation = target;
     }
 
 
