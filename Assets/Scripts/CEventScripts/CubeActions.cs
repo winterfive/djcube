@@ -30,6 +30,14 @@ public class CubeActions : MonoBehaviour
         _isActive = false;
     }
 
+    public void Update()
+    {
+        if (_isActive)
+        {
+            LerpColor();
+        }
+    }
+
     public void Over()
     {
         _rend.material.color = overColor;
@@ -62,10 +70,8 @@ public class CubeActions : MonoBehaviour
                 StopCoroutine(RotateCube());
                 rotationDegrees = -45f;
                 StartCoroutine(RotateCube());
-
-                // pulse color
-                LerpColor();
             }
+
             // button is already activated
             else
             {
@@ -109,6 +115,7 @@ public class CubeActions : MonoBehaviour
     {
         float pingpong = Mathf.PingPong(Time.time * glowSpeed, 1.0f);
         _rend.material.color = Color.Lerp(overColor, glowColor, pingpong);
+        Debug.Log("pingpong is: " + pingpong);
     }
 
 
