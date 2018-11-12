@@ -115,7 +115,6 @@ public class CubeActions : MonoBehaviour
     {
         float pingpong = Mathf.PingPong(Time.time * glowSpeed, 1.0f);
         _rend.material.color = Color.Lerp(overColor, glowColor, pingpong);
-        Debug.Log("pingpong is: " + pingpong);
     }
 
 
