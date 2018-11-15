@@ -1397,8 +1397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7022892c09237fb498ee1ca812f56b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationDuration: 0.3
-  glowSpeed: 1.2
+  rotationDuration: 0
+  glowSpeed: 0
   glowColor: {r: 0, g: 0, b: 0, a: 0}
   overColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1569676149
