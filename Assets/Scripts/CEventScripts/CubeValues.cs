@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeValues : SetAsSingleton<CubeActions> { 
+public class CubeValues : SetAsSingleton<CubeActions> {
 
-    public float rotationDuration;
+    public Color overColor;
     public float glowSpeed;
     public Color glowColor;
-    public Color overColor;
-    public int rotationDegrees;
+    public float rotationDuration;
+    public float activeRotation;
 }

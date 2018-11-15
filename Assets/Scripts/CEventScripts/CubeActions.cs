@@ -16,7 +16,9 @@ public class CubeActions : MonoBehaviour
     private Color _overColor;
     private float _rotationDuration;
     private Color _glowColor;
-    private int _rotationDegrees;
+    private float _glowSpeed;
+    private float _activeRotation;
+    private float _targetRotation;
 
     private void Awake()
     {
@@ -28,7 +30,8 @@ public class CubeActions : MonoBehaviour
             _overColor = _cubeValues.overColor;
             _rotationDuration = _cubeValues.rotationDuration;
             _glowColor = _cubeValues.glowColor;
-            _rotationDegrees = _cubeValues.rotationDegrees;
+            _glowSpeed = _cubeValues.glowSpeed;
+            _activeRotation = _cubeValues.activeRotation;
         }
         else
         {
@@ -85,7 +88,7 @@ public class CubeActions : MonoBehaviour
 
                 // rotate 45 degrees
                 StopCoroutine(RotateCube());
-                _rotationDegrees = -_rotationDegrees;
+                _targetRotation = _activeRotation;
                 StartCoroutine(RotateCube());
             }
 
@@ -100,7 +103,7 @@ public class CubeActions : MonoBehaviour
 
                 // rotate back to default rotation
                 StopCoroutine(RotateCube());
-                _rotationDegrees = 0f;
+                _targetRotation = 0f;
                 StartCoroutine(RotateCube());
 
                 _rend.material.color = _overColor;
@@ -117,11 +120,11 @@ public class CubeActions : MonoBehaviour
     {
         float time = 0f;
         Quaternion start = _this.transform.rotation;
-        Quaternion target = Quaternion.Euler(0f, 0f, _rotationDegrees);
+        Quaternion target = Quaternion.Euler(0f, 0f, _targetRotation);
 
-        while (time <_rotationDuration)
+        while (time < _rotationDuration)
         {
-            _this.transform.rotation = Quaternion.Slerp(start, target, time / _rotationDegrees);
+            _this.transform.rotation = Quaternion.Slerp(start, target, time / _rotationDuration);
             yield return null;
             time += Time.deltaTime;
         }
@@ -132,7 +135,6 @@ public class CubeActions : MonoBehaviour
 
     public void LerpColor()
     {
-        float _glowSpeed = 0;
         float pingpong = Mathf.PingPong(Time.time * _glowSpeed, 1.0f);
         _rend.material.color = Color.Lerp(_overColor, _glowColor, pingpong);
     }
