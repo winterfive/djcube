@@ -7,18 +7,19 @@ public class CubeActions : MonoBehaviour
 
     private RayCaster _rayCaster;
     private GameObject _this;
-    private Renderer _rend;
-    private Color _defaultColor;
+    private Renderer _rend;    
     private bool _isOver;
     private AudioSource _audio;
     private bool _isActive;
     private CubeValues _cubeValues;
-    private Color _overColor;
-    private float _rotationDuration;
+    private Color _defaultColor;
+    private Color _overColor;    
     private Color _glowColor;
     private float _glowSpeed;
-    private float _activeRotation;
-    private float _targetRotation;
+    private float _rotationDuration;
+    private float _defaultY;
+    private float _activeRotationZ;
+    private float _targetRotationZ;
 
     private void Awake()
     {
@@ -31,7 +32,7 @@ public class CubeActions : MonoBehaviour
             _rotationDuration = _cubeValues.rotationDuration;
             _glowColor = _cubeValues.glowColor;
             _glowSpeed = _cubeValues.glowSpeed;
-            _activeRotation = _cubeValues.activeRotation;
+            _activeRotationZ = _cubeValues.activeRotation;
         }
         else
         {
@@ -44,7 +45,8 @@ public class CubeActions : MonoBehaviour
         _defaultColor = _rend.material.color;
         _audio = _this.GetComponent<AudioSource>();
         _isOver = false;
-        _isActive = false;        
+        _isActive = false;
+        _defaultY = _this.transform.position.y;
     }
 
 
@@ -88,7 +90,7 @@ public class CubeActions : MonoBehaviour
 
                 // rotate 45 degrees
                 StopCoroutine(RotateCube());
-                _targetRotation = _activeRotation;
+                _targetRotationZ = _activeRotationZ;
                 StartCoroutine(RotateCube());
             }
 
@@ -103,7 +105,7 @@ public class CubeActions : MonoBehaviour
 
                 // rotate back to default rotation
                 StopCoroutine(RotateCube());
-                _targetRotation = 0f;
+                _targetRotationZ = 0f;
                 StartCoroutine(RotateCube());
 
                 _rend.material.color = _overColor;
@@ -119,17 +121,27 @@ public class CubeActions : MonoBehaviour
     private IEnumerator RotateCube()
     {
         float time = 0f;
-        Quaternion start = _this.transform.rotation;
-        Quaternion target = Quaternion.Euler(0f, 0f, _targetRotation);
+        //Quaternion start = _this.transform.localRotation;
+        //Quaternion target = Quaternion.Euler(new Vector3(0f, _defaultY, _targetRotationZ));
+
+        //while (time < _rotationDuration)
+        //{
+        //    _this.transform.rotation = Quaternion.Slerp(start, target, time / _rotationDuration);
+        //    yield return null;
+        //    time += Time.deltaTime;
+        //}
+
+        //_this.transform.rotation = target;
+
+        // hint
+        //currentRotation = transform.eulerAngles;
+        //currendRotation.z = Mathf.Lerp(currentRotation.z, correctRotation, Time.deltaTime * smoothness);
+        //transform.eulerAngles = currentRotation;
 
         while (time < _rotationDuration)
         {
-            _this.transform.rotation = Quaternion.Slerp(start, target, time / _rotationDuration);
-            yield return null;
-            time += Time.deltaTime;
+            
         }
-
-        _this.transform.rotation = target;
     }
 
 
