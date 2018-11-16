@@ -135,8 +135,8 @@ public class CubeActions : MonoBehaviour
 
     public void LerpColor()
     {
-        float pingpong = Mathf.PingPong(Time.time * _glowSpeed, 1.0f);
-        _rend.material.color = Color.Lerp(_overColor, _glowColor, pingpong);
+        //float pingpong = Mathf.PingPong(Time.time * _glowSpeed, 1.0f);
+        //_rend.material.color = Color.Lerp(_overColor, _glowColor, pingpong);
     }
 
 
