@@ -17,9 +17,9 @@ public class CubeActions : MonoBehaviour
     private Color _glowColor;
     private float _glowSpeed;
     private float _rotationDuration;
-    private float _defaultY;
     private float _activeRotationZ;
     private float _targetRotationZ;
+    private float _defaultY;
 
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class CubeActions : MonoBehaviour
         _audio = _this.GetComponent<AudioSource>();
         _isOver = false;
         _isActive = false;
-        _defaultY = _this.transform.position.y;
+        _defaultY = _this.transform.rotation.y;
     }
 
 
@@ -105,7 +105,7 @@ public class CubeActions : MonoBehaviour
 
                 // rotate back to default rotation
                 StopCoroutine(RotateCube());
-                _targetRotationZ = 0f;
+                _targetRotationZ = -_activeRotationZ;
                 StartCoroutine(RotateCube());
 
                 _rend.material.color = _overColor;
@@ -120,28 +120,50 @@ public class CubeActions : MonoBehaviour
 
     private IEnumerator RotateCube()
     {
-        float time = 0f;
-        //Quaternion start = _this.transform.localRotation;
-        //Quaternion target = Quaternion.Euler(new Vector3(0f, _defaultY, _targetRotationZ));
+        //float time = 0f;
+        //Quaternion start = _this.transform.rotation;
+        //Quaternion target = Quaternion.Euler(0f, _defaultY, _targetRotationZ);
 
         //while (time < _rotationDuration)
         //{
-        //    _this.transform.rotation = Quaternion.Slerp(start, target, time / _rotationDuration);
+        //    _this.transform.rotation = Quaternion.Lerp(start, target, time / _rotationDuration);
         //    yield return null;
         //    time += Time.deltaTime;
         //}
 
         //_this.transform.rotation = target;
 
-        // hint
-        //currentRotation = transform.eulerAngles;
-        //currendRotation.z = Mathf.Lerp(currentRotation.z, correctRotation, Time.deltaTime * smoothness);
-        //transform.eulerAngles = currentRotation;
+        //-----------------------
+
+        //float time = 0f;
+        //float start = _this.transform.rotation.z;
+        //float target = _targetRotationZ;
+        //float zRot;
+
+        //while (time < _rotationDuration)
+        //{
+        //    zRot = Mathf.Lerp(start, target, time / _rotationDuration);
+        //    _this.transform.rotation = Quaternion.Euler(0f, _defaultY, zRot);
+        //    yield return null;
+        //    time += Time.deltaTime;
+        //}
+
+        //---------------------------
+
+        float time = 0f;
+        Quaternion start = _this.transform.rotation;
+        Quaternion target = start * Quaternion.AngleAxis(_targetRotationZ, Vector3.forward);
 
         while (time < _rotationDuration)
         {
-            
+            _this.transform.rotation = Quaternion.Lerp(start, target, time / _rotationDuration);
+            yield return null;
+            time += Time.deltaTime;
         }
+
+        //_this.transform.rotation = target;
+
+        //start = _this.transform.rotation.z;
     }
 
 
