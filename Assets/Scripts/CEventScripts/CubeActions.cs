@@ -40,7 +40,7 @@ public class CubeActions : MonoBehaviour
         }
 
         _rayCaster = RayCaster.Instance;
-        _background = GameObject.FindGameObjectWithTag("Background");
+        _background = this.transform.GetChild(0).gameObject;
         _rend = _background.GetComponent<Renderer>();
         _defaultColor = _rend.material.color;
         _audio = GetComponent<AudioSource>();
